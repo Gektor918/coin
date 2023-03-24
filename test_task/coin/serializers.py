@@ -53,8 +53,6 @@ class CryptoSerializer(serializers.ModelSerializer):
 
 
 class FavoritesSerializer(serializers.ModelSerializer):
-    #cryptos = serializers.ListField(child=serializers.IntegerField())
-
     class Meta:
         model = Favorites
         fields = ['user', 'cryptos']

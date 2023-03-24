@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-!h0963tj1jj=4wdlig6gfj0=7&t+nv!m(sm58%rbmpy_&ydr_u
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['testserver']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -49,6 +49,9 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication'
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
     ],
 }
 
@@ -101,12 +104,12 @@ WSGI_APPLICATION = 'test_task.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+
 DATABASES = {
+    
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'coin',
-        'USER':'postgres',
-        'PASSWORD':'918',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 

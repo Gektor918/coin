@@ -6,7 +6,9 @@ client = Client('nSrDYLKQvrMB7NlN', '6qFhVdqpSNwXaqjCHlSHBCfSEPCTMXzy')
 
 
 def infocheck_and_create():
-    ''' ДФ '''
+    
+    ''' Collection of information and creation of sapices'''
+
     path = "https://api.coinbase.com/v2/currencies/crypto"
     crypto = req.get(path)
     crypto_json = crypto.json()
