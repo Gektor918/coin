@@ -9,7 +9,7 @@ schema_view = get_schema_view(
       url='https://127.0.0.1:8000/',
       title="Test_task",
       default_version='v1',
-      description="New app",
+      description="New app coin",
       license=openapi.License(name="BSD License"),
    ),
    public=True,

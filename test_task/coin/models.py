@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
 class Crypto(models.Model):
     code = models.CharField(max_length=60, null=False, blank=False, unique=True, verbose_name='Символьный код')
     name = models.CharField(max_length=60, null=False, blank=False, verbose_name='Имя')

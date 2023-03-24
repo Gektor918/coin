@@ -5,8 +5,6 @@ from coin.models import Crypto
 client = Client('nSrDYLKQvrMB7NlN', '6qFhVdqpSNwXaqjCHlSHBCfSEPCTMXzy')
 
 
-
-
 def infocheck_and_create():
     ''' ДФ '''
     path = "https://api.coinbase.com/v2/currencies/crypto"
@@ -15,11 +13,9 @@ def infocheck_and_create():
 
     try:
         code_and_name = [(crypto['code'], crypto['name']) for crypto in crypto_json['data']]
-        print('ok')
         code_name_price = [(elem[0],elem[1],client.get_buy_price(currency_pair=elem[0]+'-USD')['amount']) for elem in code_and_name]
-        print('ok')
         code_name_price_rates = [(elem[0],elem[1],elem[2],client.get_exchange_rates(currency=elem[0])) for elem in  code_name_price]
-        print('ok')
+
     except:
         pass
 

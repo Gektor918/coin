@@ -4,15 +4,13 @@ from rest_framework.views import APIView
 from coin.api_coin import *
 from coin.models import *
 from coin.serializers import *
-from rest_framework.permissions import IsAuthenticated
 from coin.api_coin import infocheck_and_create
 from coin.newsapi import get_news
 
 
-
 class All_list_crypto_info(APIView):
-    """ Получение списка всех криптовалют c учетом обменного курса """
-    permission_classes = [IsAuthenticated]
+
+    """ Getting a list of all cryptocurrencies, taking into account the exchange rate """
 
     def get(self,request):
         queryset_crypto = Crypto.objects.all()
@@ -21,8 +19,8 @@ class All_list_crypto_info(APIView):
 
 
 class All_list_crypto(APIView):
-    """ Получение списка всех криптовалют без учета обменного курса """
-    permission_classes = [IsAuthenticated]
+
+    """ Getting a list of all cryptocurrencies without taking into account the exchange rate """
 
     def get(self,request):
         queryset_crypto = Crypto.objects.all()
@@ -31,8 +29,8 @@ class All_list_crypto(APIView):
 
 
 class One_crypto(APIView):
-    """ Получение информации о конкретной криптовалюте по символьному коду """
-    permission_classes = [IsAuthenticated]
+
+    """ Obtaining information about a specific cryptocurrency by symbolic code """
 
     def post(self,request):
         try:
@@ -40,12 +38,12 @@ class One_crypto(APIView):
             serializer_class = All_list_crypto_info_serializer(need_crypto)
             return Response({'info': serializer_class.data})
         except:
-            return Response('Такого символьного кода не существует')
+            return Response('No such character code exists')
 
 
 class Add_crypto(APIView):
-    """ Добавление новой криптовалюты """
-    permission_classes = [IsAuthenticated]
+
+    """ Adding a new cryptocurrency """
 
     def post(self, request):
         new_cryto_seria = Add_crypto_serializer(data = request.data)
@@ -55,8 +53,8 @@ class Add_crypto(APIView):
 
 
 class CryptoUpdateView(generics.RetrieveUpdateAPIView):
-    """ Обновление информации о криптовалюте """
-    permission_classes = [IsAuthenticated]
+
+    """ Cryptocurrency information update """
 
     serializer_class = Add_crypto_serializer
     queryset = Crypto.objects.all()
@@ -67,8 +65,8 @@ class CryptoUpdateView(generics.RetrieveUpdateAPIView):
 
 
 class CryptoDestroyView(generics.RetrieveDestroyAPIView):
-    """ Удаление криптовалюты """
-    permission_classes = [IsAuthenticated]
+
+    """ Deleting a Cryptocurrency """
 
     queryset = Crypto.objects.all()
     serializer_class = CryptoSerializer
@@ -79,8 +77,8 @@ class CryptoDestroyView(generics.RetrieveDestroyAPIView):
 
 
 class New_base(APIView):
-    """ Получения данных о курсах криптовалют """
-    permission_classes = [IsAuthenticated]
+
+    """ Obtaining data on cryptocurrencies, initial formation of a database """
 
     def post(self,request):
         infocheck_and_create()
@@ -91,6 +89,8 @@ class New_base(APIView):
 
 class Allfavorites(APIView):
 
+    """ Selected cryptocurrencies """
+
     def get(self,request):
         queryset_Favorites = Favorites.objects.filter(user=request.user)
         serializer_class = FavoritesSerializer(queryset_Favorites, many=True)
@@ -98,6 +98,8 @@ class Allfavorites(APIView):
 
 
 class Addfavorites(APIView):
+
+    """ Add selected cryptocurrencies """
 
     def post(self, request):
         new_favorites_seria = FavoritesSerializer(data = request.data)
@@ -107,6 +109,9 @@ class Addfavorites(APIView):
 
 
 class NewsAPIView(APIView):
+
+    """ NewsAPI """
+
     def get(self, request, format=None):
         query = 'Ethereum'
         return Response(get_news(query))
