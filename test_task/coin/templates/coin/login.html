@@ -1,0 +1,14 @@
+{% extends 'coin/index.html'%}
+
+{% block body %}
+{% if not request.user.is_authenticated %}
+<form method="post">
+    {% csrf_token %}
+    Имя пользователя: <input type="text" name="username"/><br>
+    Пароль: <input type="password" name="password"/><br>
+    <div class="button-box">
+        <button type="submit"><span>Войти</span></button>
+    </div>
+</form>
+{% endif %}
+{% endblock %}

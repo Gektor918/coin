@@ -1,5 +1,7 @@
 from django.urls import path
 from coin.views import *
+from coin import views
+
 
 urlpatterns = [
     path('all/info', All_list_crypto_info.as_view()),
@@ -12,4 +14,9 @@ urlpatterns = [
     path('add/favorite', Addfavorites.as_view()),
     path('all/favorite', Allfavorites.as_view()),
     path('news', NewsAPIView.as_view()),
+    path('index', views.index, name='index'),
+    path('register', RegisterView.as_view(), name='register'),
+    path('Login', LoginView.as_view(), name='Login'),
+    path('Logout', views.logout_user, name='Logout'),
+    path('profile', ProfilePage.as_view(), name='profile'),
 ]

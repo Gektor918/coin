@@ -6,6 +6,86 @@ from coin.models import *
 from coin.serializers import *
 from coin.api_coin import infocheck_and_create
 from coin.newsapi import get_news
+from django.shortcuts import render, redirect
+from django.views.generic import TemplateView
+from django.contrib.auth import authenticate, login, logout 
+
+
+
+def index(request):
+    return render(request,"coin/index.html")
+
+
+def news(request):
+    query = 'Bitcoin'
+    return Response(get_news(query))
+
+
+class RegisterView(TemplateView):
+    def dispatch(self, request):
+        if request.method == 'POST':
+            if request.POST.get('password') == request.POST.get('password2'):
+                User.objects.create_user(request.POST.get('username'), request.POST.get('email'), request.POST.get('password'))
+                user = authenticate(request, username=request.POST.get('username'), password=request.POST.get('password'))
+                login(request, user)
+                return redirect("profile")
+            else:
+                return render(request,'coin/register.html')
+        return render(request,'coin/register.html')
+
+
+class LoginView(TemplateView):
+    def dispatch(self, request):
+        if request.method == 'POST':
+            user = authenticate(request, username=request.POST['username'], password=request.POST['password'])
+            if user is not None:
+                login(request, user)
+            return redirect("profile")
+        return render(request,"coin/login.html")
+
+
+class ProfilePage(TemplateView):
+
+    def dispatch(self, request):
+        all_crypto = Crypto.objects.all()
+        cod = [i.code for i in all_crypto]
+        default = get_news('Bitcoin новости')
+
+        try:
+            need_profile = Profile.objects.get(user=request.user)
+        except:
+            need_profile = False
+            if request.method == "POST":
+                profile = Profile()
+                profile.user = request.user
+                profile.name = User.objects.get(username=request.user).get_username()
+                crypto_ids = request.POST.getlist("id_crypto")
+                profile.save()
+                crypto = Crypto.objects.filter(id__in=crypto_ids)
+                profile.crypto.set(crypto)
+    
+        try:
+            news = get_news(request.POST['query'])
+        except:
+            news = default
+
+        try:
+            need_crypto = Crypto.objects.get(code=request.POST['code'])
+            return render(request,"coin/profile.html",{'all_info':all_crypto,
+                                                        'need_crypto':need_crypto,
+                                                        'cod':cod,'news':news,
+                                                        'need_profile': need_profile,
+                                                        })
+        except:
+            return render(request,"coin/profile.html",{'all_info':all_crypto,
+                                                        'cod':cod,'news':news,
+                                                        'need_profile': need_profile,
+                                                        })
+
+
+def logout_user(request):
+    logout(request)
+    return redirect('Login')
 
 
 class All_list_crypto_info(APIView):
@@ -115,5 +195,3 @@ class NewsAPIView(APIView):
     def get(self, request, format=None):
         query = 'Ethereum'
         return Response(get_news(query))
-
-

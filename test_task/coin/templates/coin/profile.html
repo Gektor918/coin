@@ -1,0 +1,94 @@
+{% extends 'coin/index.html'%}
+
+{% block body %}
+    {% if request.user.is_authenticated %}
+
+<!-- Заполнить профиль и добавить в избранное  -->
+<form method="post">
+    {% csrf_token %}
+    {% if need_profile == False %}
+    <form method="POST">
+        {% csrf_token %}
+        <p>
+            <label>Добавить в избранное</label><br>
+            <div>
+            {% for entry in all_info %}
+                <input type="checkbox" name="id_crypto" value="{{entry.id}}" />{{ entry.name }}
+            {% endfor %}
+            </div>
+        </p>
+        <input type="submit" value="Сохранить" >
+    </form>
+    {% else %}
+        Имя профиля: {{ need_profile.name }} <br><br>
+        <td>
+            Избранное:<br>
+            {% for coin in need_profile.crypto.all %}
+                     {{coin.name}}<br>
+            {% endfor %}
+        </td>
+    {% endif %}
+</form>
+<hr>
+
+
+Все коды:
+{% for i in cod %}
+        {{i}}
+{% endfor %}
+
+
+<!-- Форма поиска  -->
+    <form method="post">
+        {% csrf_token %}
+        <br>
+        Введите код крипты: <input type="text" name="code"/>
+        <button type="submit"><span>Найти цену</span></button>
+    </form>
+
+
+<!-- Результаты поиска  -->
+    <br>
+    Результаты поиска:<br><br>
+    Код: {{ need_crypto.code }}<br>
+    Название: {{ need_crypto.name }}<br>
+    Цена: {{ need_crypto.current_rate }} $ <br>
+    <hr>
+    <br>
+
+<!-- Поиск новостей  -->
+    <form method="post">
+        {% csrf_token %}
+        Введите тег новости: <input type="text" name="query"/>
+        <button type="submit"><span>Найти новости</span></button>
+    </form>
+
+
+<!-- Вывод новостей  -->
+    <br>
+    {% for entry in news.articles %}
+        <hr>
+        {{ entry.author }}<br>
+        {{ entry.title }}<br>
+        {{ entry.description }}<br>
+        {{ entry.url }}<br>
+        {{ entry.publishedAt }}<br>
+        {{ entry.content}}<br>
+        <hr>
+        <br>
+        <br>
+    {% endfor %}
+
+
+<!-- Вся информация про криптовалюты  -->
+        {% for entry in all_info %}<hr> 
+            Код: {{ entry.code }}<br> 
+            Название: {{ entry.name }}<br> 
+            Цена: {{ entry.current_rate }} $ <br> 
+            Относительная цена: <hr> 
+            {{ entry.exchange_rate.rates}} <br>
+            <br>
+        {% endfor %}
+        
+    {% endif %}
+{% endblock %}
