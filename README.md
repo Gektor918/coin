@@ -13,3 +13,11 @@
 
 <h3>4. Устанавливаем зависимости</h3>
 &nbsp &nbsp &nbsp Команда - pip install -r requirements.txt
+
+
+<h3>5. Дополнительно к ТЗ сделано</h3>
+&nbsp &nbsp &nbsp Подключен /swagger/
+&nbsp &nbsp &nbsp Поинт наполнения бд данными
+&nbsp &nbsp &nbsp Подключени и настроен djoser, регистрация и авторизация по токенам через API
+&nbsp &nbsp &nbsp В html реализован поисковик новостей
+&nbsp &nbsp &nbsp В администраторской панели отображены модели
