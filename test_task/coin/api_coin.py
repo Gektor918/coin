@@ -2,7 +2,8 @@ import requests as req
 from coinbase.wallet.client import Client
 from coin.models import Crypto
 
-client = Client('nSrDYLKQvrMB7NlN', '6qFhVdqpSNwXaqjCHlSHBCfSEPCTMXzy')
+# Здесь ваши ключи
+client = Client('key', 'key')
 
 
 def infocheck_and_create():
