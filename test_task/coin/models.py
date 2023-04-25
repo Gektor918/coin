@@ -24,6 +24,9 @@ class Profile(models.Model):
     def __str__(self):
         return 'Избранное юзера: {}'.format(self.name)
 
+    class Meta:
+        verbose_name = 'Профиль'
+        verbose_name_plural = 'Профиля'
 
 class Favorites(models.Model):
     user = models.ForeignKey(Profile, on_delete=models.CASCADE, verbose_name='Имя пользователя', related_name='favorites')
